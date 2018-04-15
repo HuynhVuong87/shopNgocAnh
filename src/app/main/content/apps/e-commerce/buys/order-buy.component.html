@@ -1,0 +1,101 @@
+<div id="orderbuy" class="page-layout carded fullwidth" fusePerfectScrollbar>
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg mat-accent-bg"></div>
+  <!-- / TOP BACKGROUND -->
+
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header white-fg" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+
+      <!-- APP TITLE -->
+      <div class="logo my-12 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">shopping_basket</mat-icon>
+        <span style="text-transform: uppercase" class="logo-text h1" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Order Buy</span>
+      </div>
+      <!-- / APP TITLE -->
+
+      <!-- SEARCH -->
+      <div class="search-input-wrapper mx-12 m-md-0" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+        <label for="search" class="mr-8">
+          <mat-icon class="secondary-text">search</mat-icon>
+        </label>
+        <mat-form-field floatPlaceholder="never" fxFlex="1 0 auto">
+          <input id="search" matInput #filter (keyup)="applyFilter($event.target.value)" placeholder="Search">
+        </mat-form-field>
+      </div>
+      <!-- / SEARCH -->
+
+      <button mat-raised-button [routerLink]="'/apps/e-commerce/buys/new'" class="add-orderbuy-button mat-white-bg my-12 mt-sm-0">
+        <span>ADD NEW ORDER BUY</span>
+      </button>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT CARD -->
+    <div class="content-card mat-white-bg">
+
+      <mat-table class="orderbuy-table" #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+
+        <ng-container matColumnDef="storeName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Store Name</mat-header-cell>
+          <mat-cell *matCellDef="let orderbuy" [title]="orderbuy.storename">
+            <p class="text-truncate">{{orderbuy.storename}}</p>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="amountPrice">
+          <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-xs>Order Price</mat-header-cell>
+          <mat-cell *matCellDef="let orderbuy" fxHide fxShow.gt-md>
+            <p class="category text-truncate">
+              {{orderbuy.amountprice}}
+            </p>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="amountProduct">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Product</mat-header-cell>
+          <mat-cell *matCellDef="let orderbuy" fxHide fxShow.gt-xs>
+            <p class="price text-truncate">
+              {{orderbuy.invoicebuyid.length}}
+            </p>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="airwaybill">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Airway bill</mat-header-cell>
+          <mat-cell *matCellDef="let orderbuy" fxHide fxShow.gt-sm>
+            <span>
+              {{orderbuy.airwaybill}}
+            </span>
+
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="orderdate">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Order date</mat-header-cell>
+          <mat-cell *matCellDef="let orderbuy" fxHide fxShow.gt-xs>
+            <span>
+              {{orderbuy.orderdate | date}}
+            </span>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+        <mat-row *matRowDef="let orderbuy; columns: displayedColumns;" class="orderbuy" matRipple [routerLink]="'/apps/e-commerce/buys/'+orderbuy.id">
+        </mat-row>
+
+      </mat-table>
+
+      <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator>
+
+    </div>
+    <!-- / CONTENT CARD -->
+  </div>
+  <!-- / CENTER -->
+</div>

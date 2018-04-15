@@ -1,0 +1,217 @@
+<div id="store" class="page-layout carded fullwidth" fusePerfectScrollbar>
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg mat-accent-bg"></div>
+  <!-- / TOP BACKGROUND -->
+
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header white-fg" fxLayout="row" fxLayoutAlign="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <button class="mr-0 mr-sm-16" mat-icon-button [routerLink]="'/apps/e-commerce/buys'">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+
+        <div class="store-image mr-8 mr-sm-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+          <!-- <img *ngIf="invoicebuy.url" [src]="invoicebuy.url"> -->
+          <img [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="start start" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2" *ngIf="pageType ==='edit'">
+            Order Buy {{orderbuy.id}}
+          </div>
+          <div class="h2" *ngIf="pageType ==='new'">
+            New
+          </div>
+          <div class="subtitle secondary-text">
+            <span>Buy Detail</span>
+          </div>
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+      <div>
+        <button mat-raised-button class="save-store-button mat-accent-bg mt-16 mt-sm-0" [disabled]="orderBuyForm.invalid" *ngIf="pageType ==='new'"
+          (click)="addBuys()">
+          <span>ADD</span>
+        </button>
+
+        <button mat-raised-button class="save-store-button mat-accent-bg mt-16 mt-sm-0" [disabled]="orderBuyForm.invalid" *ngIf="pageType ==='edit'"
+          (click)="saveBuy()">
+          <span>SAVE</span>
+        </button>
+
+        <button mat-raised-button class="save-store-button mat-warn-bg mt-16 mt-sm-0" *ngIf="pageType ==='edit'" (click)="deleteBuy()">
+          <span>DELETE</span>
+        </button>
+      </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT CARD -->
+    <div class="content-card mat-white-bg">
+
+      <!-- CONTENT -->
+      <div class="content">
+
+        <div class="store w-100-p" fxLayout="column" fxFlex>
+
+          <mat-tab-group>
+
+
+            <mat-tab label="Order Buy">
+              <form class="store w-100-p" name="orderBuyForm" [formGroup]="orderBuyForm">
+
+                <div class="tab-content p-24" fusePerfectScrollbar>
+
+                  <div class="py-16" fxLayout="row">
+                    <mat-form-field class="w-100-p">
+                      <input matInput name="storename" formControlName="storename" placeholder="Store Name" [matAutocomplete]="store" required>
+                      <mat-autocomplete #store="matAutocomplete">
+                        <mat-option *ngFor="let store of filteredStores | async" [value]="store.name">
+                          {{ store.name }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                    <mat-form-field class="w-100-p">
+                      <input matInput name="airwaybill" formControlName="airwaybill" placeholder="Airway Bill" required>
+                    </mat-form-field>
+                    <mat-form-field class="w-100-p">
+                      <input matInput name="sourceorderid" formControlName="sourceorderid" placeholder="Source OrderId" required>
+                    </mat-form-field>
+                    <mat-form-field class="w-100-p">
+                      <input matInput name="weight" formControlName="weight" placeholder="Weight" required>
+                    </mat-form-field>
+
+                  </div>
+
+                  <div class="py-16" fxLayout="row">
+
+                    <mat-form-field class="w-100-p">
+                      <input matInput [matDatepicker]="orderdate" placeholder="Order Date" formControlName="orderdate" required>
+                      <mat-datepicker-toggle matSuffix [for]="orderdate"></mat-datepicker-toggle>
+                      <mat-datepicker #orderdate></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100-p">
+                      <input matInput [matDatepicker]="chinaarrivaldate" placeholder="China Arrival Date" formControlName="chinaarrivaldate" required>
+                      <mat-datepicker-toggle matSuffix [for]="chinaarrivaldate"></mat-datepicker-toggle>
+                      <mat-datepicker #chinaarrivaldate></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100-p">
+                      <input matInput [matDatepicker]="vietnamarrivaldate" placeholder="VietNam Arrival Date" formControlName="vietnamarrivaldate"
+                        required>
+                      <mat-datepicker-toggle matSuffix [for]="vietnamarrivaldate"></mat-datepicker-toggle>
+                      <mat-datepicker #vietnamarrivaldate></mat-datepicker>
+                    </mat-form-field>
+
+                  </div>
+                  <div class="py-16" fxLayout="row">
+                    <mat-form-field class="w-100-p">
+                      <input matInput placeholder="China Freight" formControlName="chinafreight" type="number" required>
+                      <span matSuffix>NDT</span>
+                    </mat-form-field>
+                    <mat-form-field class="w-100-p">
+                      <input matInput placeholder="China VietNam Freight" formControlName="chinavietnamfreight" type="number" required>
+                      <span matSuffix>VND</span>
+                    </mat-form-field>
+                    <mat-form-field class="w-100-p">
+                      <input matInput placeholder="VietNam Freight" formControlName="vietnamfreight" type="number" required>
+                      <span matSuffix>VND</span>
+                    </mat-form-field>
+                    <mat-form-field class="w-100-p">
+                      <input matInput placeholder="rate" formControlName="rate" type="number" required>
+                      <!-- <span matSuffix>VND</span> -->
+                    </mat-form-field>
+
+                  </div>
+                  <div class="py-16" fxLayout="row">
+                    <mat-checkbox formControlName="ispaid">Is Paid?</mat-checkbox>
+                    <mat-checkbox formControlName="isreceived">Is Received?</mat-checkbox>
+                  </div>
+                  <mat-form-field class="w-100-p">
+                    <textarea matInput name="note" formControlName="note" placeholder="Note" rows="3">
+                      </textarea>
+                  </mat-form-field>
+
+                </div>
+              </form>
+            </mat-tab>
+
+            <mat-tab label="Invoice Buy">
+              <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                <table class="simple invoice-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Image</th>
+                      <th class="text-right">Classify</th>
+                      <th class="text-right">Quantity</th>
+                      <th class="text-right">Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let invoicebuy of invoicebuys, let i = index" [formGroup]="invoiceBuyForm[i]">
+                      <td>
+                        <input matInput fuseProduct [Product]="invoiceBuyForm[i].get('Name')" (getProduct)="filteredProducts[i] = $event" placeholder="Product Name" formControlName="Name" [matAutocomplete]="auto" required>
+                        <mat-autocomplete #auto="matAutocomplete">
+                          <mat-option *ngFor="let product of filteredProducts[i] | async" [value]="product.name" (click)="proId[i] = product.id">
+                            <span>{{ product.name }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                      </td>
+                      <td class="text-right">
+                          <img *ngIf="invoicebuy.skuImage" style="vertical-align:middle;max-height: 40px;" aria-hidden [src]="invoicebuy.skuImage" height="25" />
+                      </td>
+                      <td class="text-right">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                          <input matInput placeholder="skuName" formControlName="skuName" [matAutocomplete]="sku" fuseSku [Sku]="{proId: proId[i]? proId[i] : invoiceBuyForm[i].get('productId').value, sku: invoiceBuyForm[i].get('Name')}" (getSku)="filteredSku[i]=$event" required>
+                          <mat-autocomplete #sku="matAutocomplete">
+                            <mat-option *ngFor="let sku of filteredSku[i] | async" [value]="sku.skuName" (click)="invoicebuy.skuImage = sku.skuUrl_Image">
+                                <img *ngIf="sku.skuUrl_Image" style="vertical-align:middle;max-height: 40px;" aria-hidden [src]="sku.skuUrl_Image" height="25" />
+                              <span>{{ sku.skuName }}</span>
+                            </mat-option>
+                          </mat-autocomplete>
+                        </div>
+                      </td>
+                      <td class="text-right">
+                        <input matInput placeholder="quantity" formControlName="quantity" type="number" required>
+                      </td>
+                      <td class="text-right">
+                        <input matInput name="price" formControlName="price" placeholder="price" type="number" required>
+                      </td>
+                      <td class="text-right">
+                        <button mat-mini-fab color="primary" (click)="delInvoiceBuy(invoicebuy,invoiceBuyForm[i],filteredProducts[i])">
+                          <span>&#8722;</span>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <button mat-mini-fab style="position: absolute;
+                      right: 0;" color="primary" (click)="newInvoiceBuy()">
+                    <span>&#43;</span>
+                  </button>
+                </table>
+              </div>
+            </mat-tab>
+
+          </mat-tab-group>
+        </div>
+
+      </div>
+      <!-- / CONTENT -->
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+</div>

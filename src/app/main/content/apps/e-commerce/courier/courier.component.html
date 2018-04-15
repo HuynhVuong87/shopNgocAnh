@@ -1,0 +1,133 @@
+<div id="courier" class="page-layout carded fullwidth" fusePerfectScrollbar>
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg mat-accent-bg"></div>
+  <!-- / TOP BACKGROUND -->
+
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header white-fg" fxLayout="row" fxLayoutAlign="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <button class="mr-0 mr-sm-16" mat-icon-button [routerLink]="'/apps/e-commerce/couriers'">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+
+        <div class="courier-image mr-8 mr-sm-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+          <img [src]="'assets/images/ecommerce/product-image-upload-placeholder.png'">
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="start start" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2" *ngIf="pageType ==='edit'">
+            {{courier.name}}
+          </div>
+          <div class="h2" *ngIf="pageType ==='new'">
+            New Courier
+          </div>
+          <div class="subtitle secondary-text">
+            <span>Courier Detail</span>
+          </div>
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+      <div>
+        <button mat-raised-button class="save-courier-button mat-accent-bg mt-16 mt-sm-0" [disabled]="courierForm.invalid" *ngIf="pageType ==='new'"
+          (click)="addCourier()">
+          <span>ADD</span>
+        </button>
+
+        <button mat-raised-button class="save-courier-button mat-accent-bg mt-16 mt-sm-0" [disabled]="courierForm.invalid" *ngIf="pageType ==='edit'"
+          (click)="saveCourier()">
+          <span>SAVE</span>
+        </button>
+
+        <button mat-raised-button class="save-courier-button mat-warn-bg mt-16 mt-sm-0" *ngIf="pageType ==='edit'" (click)="deleteCourier()">
+          <span>DELETE</span>
+        </button>
+      </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT CARD -->
+    <div class="content-card mat-white-bg">
+
+      <!-- CONTENT -->
+      <div class="content">
+
+        <form name="courierForm" [formGroup]="courierForm" class="courier w-100-p" fxLayout="column" fxFlex>
+
+          <mat-tab-group>
+
+            <mat-tab label="Basic Info">
+              <div class="tab-content p-24" fusePerfectScrollbar>
+
+                <mat-form-field class="w-100-p">
+                  <input matInput name="name" formControlName="name" placeholder="Courier Name" required>
+                </mat-form-field>
+
+                <mat-form-field class="w-100-p">
+                  <input matInput name="shipIdFormat" formControlName="shipIdFormat" placeholder="shipIdFormat" required>
+                </mat-form-field>
+
+                <mat-form-field class="w-100-p">
+                  <input matInput name="trackingUrlFormat" formControlName="trackingUrlFormat" placeholder="trackingUrlFormat" required>
+                </mat-form-field>
+
+              </div>
+            </mat-tab>
+
+            <mat-tab label="Contacts">
+              <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+
+                <mat-form-field class="w-100-p">
+                  <input matInput name="Email" formControlName="email" placeholder="Email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                    required>
+                </mat-form-field>
+
+                <mat-form-field class="w-100-p">
+                  <input matInput name="Phone" formControlName="phone" placeholder="Phone" pattern="^((01[2689])|09)[0-9]{8}$" required>
+                </mat-form-field>
+
+                <div class="py-16" fxLayout="row">
+                  <mat-form-field fxFlex>
+                    <input matInput placeholder="City" formControlName="city" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let city of filteredCities | async" [value]="city.name">
+                        {{ city.name }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <mat-form-field fxFlex>
+                      <input matInput placeholder="Districts" formControlName="district" [matAutocomplete]="district">
+                      <mat-autocomplete #district="matAutocomplete">
+                          <mat-option *ngFor="let district of filteredDistricts | async" [value]="district.name">
+                              {{ district.name }}
+                            </mat-option>
+                      </mat-autocomplete>
+                  </mat-form-field>
+                  <mat-form-field fxFlex>
+                    <input matInput name="Address" formControlName="address" placeholder="Address">
+                  </mat-form-field>
+                </div>
+
+              </div>
+            </mat-tab>
+
+          </mat-tab-group>
+        </form>
+
+      </div>
+      <!-- / CONTENT -->
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+</div>

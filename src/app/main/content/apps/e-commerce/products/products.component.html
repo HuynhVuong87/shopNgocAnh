@@ -1,0 +1,123 @@
+<div id="products" class="page-layout carded fullwidth" fusePerfectScrollbar>
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg mat-accent-bg"></div>
+  <!-- / TOP BACKGROUND -->
+
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header white-fg" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+
+      <!-- APP TITLE -->
+      <div class="logo my-12 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">shopping_basket</mat-icon>
+        <span style="text-transform: uppercase" class="logo-text h1" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Products</span>
+      </div>
+      <!-- / APP TITLE -->
+
+      <!-- SEARCH -->
+      <div class="search-input-wrapper mx-12 m-md-0" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+        <label for="search" class="mr-8">
+          <mat-icon class="secondary-text">search</mat-icon>
+        </label>
+        <mat-form-field floatPlaceholder="never" fxFlex="1 0 auto">
+          <input id="search" matInput #filter (keyup)="applyFilter($event.target.value)" placeholder="Search">
+        </mat-form-field>
+      </div>
+      <!-- / SEARCH -->
+
+      <button mat-raised-button [routerLink]="'/apps/e-commerce/products/new'" class="add-product-button mat-white-bg my-12 mt-sm-0">
+        <span>ADD NEW PRODUCT</span>
+      </button>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT CARD -->
+    <div class="content-card mat-white-bg">
+
+      <mat-table class="products-table" #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+
+        <!-- ID Column -->
+        <!-- <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                    <mat-cell *matCellDef="let product">
+                        <p class="text-truncate">{{product.id}}</p>
+                    </mat-cell>
+                </ng-container> -->
+
+        <!-- Image Column -->
+        <ng-container matColumnDef="image">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let product">
+            <img class="product-image" *ngIf="product.skuUrl_Image" [alt]="product.name" [src]="product.skuUrl_Image" />
+            <img *ngIf="!product.skuUrl_Image" [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+          </mat-cell>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+          <mat-cell *matCellDef="let product" [title]="product.name">
+            <p class="text-truncate">{{product.name}}</p>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Category Column -->
+        <!-- <ng-container matColumnDef="category">
+          <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Category</mat-header-cell>
+          <mat-cell *matCellDef="let product" fxHide fxShow.gt-md>
+            <p class="category text-truncate">
+              {{product.category[0]}}
+            </p>
+          </mat-cell>
+        </ng-container> -->
+
+        <!-- Price Column -->
+        <!-- <ng-container matColumnDef="price">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Price</mat-header-cell>
+          <mat-cell *matCellDef="let product" fxHide fxShow.gt-xs>
+            <p class="price text-truncate">
+              {{product.price | currency:'USD':'symbol'}}
+            </p>
+          </mat-cell>
+        </ng-container> -->
+
+        <!-- Quantity Column -->
+        <!-- <ng-container matColumnDef="dimension">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Dimension</mat-header-cell>
+          <mat-cell *matCellDef="let product" fxHide fxShow.gt-sm>
+            <span>
+              {{product.long}}x{{product.width}}x{{product.height}}
+            </span>
+
+          </mat-cell>
+        </ng-container> -->
+
+        <!-- Active Column -->
+        <ng-container matColumnDef="sku">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Sku</mat-header-cell>
+          <mat-cell *matCellDef="let product" fxHide fxShow.gt-xs>
+            <span>
+              {{product.sku}}
+            </span>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+        <mat-row *matRowDef="let product; columns: displayedColumns;" class="product" matRipple [routerLink]="'/apps/e-commerce/products/'+product.id">
+        </mat-row>
+
+      </mat-table>
+
+      <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator>
+
+    </div>
+    <!-- / CONTENT CARD -->
+  </div>
+  <!-- / CENTER -->
+</div>

@@ -1,0 +1,104 @@
+@import "src/@fuse/scss/fuse";
+.mat-header-cell {
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Montserrat Alternates', sans-serif;
+    color: rgb(91, 183, 255);
+    text-transform: uppercase
+}
+.mat-paginator-container{
+    min-height: 33px !important;
+    height: 35px !important;
+}
+.page-layout.carded {
+    background: #000;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right,rgb(32, 25, 68),rgb(89, 41, 50));  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right,rgb(32, 25, 68), rgb(89, 41, 50)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+:host {
+
+    .header {
+
+        .search-input-wrapper {
+            max-width: 480px;
+        }
+
+        @include media-breakpoint-down(xs) {
+            height: 176px !important;
+            min-height: 176px !important;
+            max-height: 176px !important;
+        }
+    }
+
+    .top-bg {
+        @include media-breakpoint-down(xs) {
+            height: 200px;
+        }
+    }
+
+    .stores-table {
+        flex: 1 1 auto;
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+        overflow: auto;
+
+        .mat-header-row {
+            min-height: 64px;
+            background: rgba(0, 0, 0, 0.85);
+            border: none;
+        }
+
+        .store {
+            position: relative;
+            cursor: pointer;
+            height: 75px;
+        }
+
+        .mat-cell {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 18px !important;
+            text-transform: capitalize
+        }
+
+        .mat-column-id {
+            flex: 0 1 84px;
+        }
+
+        .mat-column-image {
+            flex: 0 1 84px;
+
+            .store-image {
+                width: 55px;
+                height: 55px;
+                border-radius: 50%
+            }
+        }
+
+        .mat-column-buttons {
+            flex: 0 1 80px;
+        }
+
+        .quantity-indicator {
+            display: inline-block;
+            vertical-align: middle;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+
+            & + span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        .active-icon {
+            border-radius: 50%;
+        }
+    }
+}
